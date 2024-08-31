@@ -6,6 +6,7 @@ import {
 } from "react";
 import { useStorageState } from "./useStorage";
 import * as ScreenOrientation from "expo-screen-orientation";
+import { uniq } from "lodash";
 
 const AppStateContext = createContext<{
   isLoading: boolean;
@@ -13,12 +14,16 @@ const AppStateContext = createContext<{
   isLandscaped: boolean;
   homeCurrentView: number;
   setHomeCurrentView: (value: number) => void;
+  views: number[];
+  updateViews: (value: number) => void;
 }>({
   isLoading: false,
   orientation: ScreenOrientation.Orientation.UNKNOWN,
   isLandscaped: false,
   homeCurrentView: 1,
   setHomeCurrentView(_value) {},
+  views: [],
+  updateViews: (_value) => {},
 });
 
 // This hook can be used to access the user info.
@@ -46,7 +51,7 @@ export function AppStateProvider({ children }: PropsWithChildren) {
       JSON.stringify({
         ...prevValue,
         [key]: value,
-      }),
+      })
     );
   }
 
@@ -55,9 +60,9 @@ export function AppStateProvider({ children }: PropsWithChildren) {
       (newOrientation) => {
         updateAppState(
           "orientation",
-          newOrientation.orientationInfo.orientation,
+          newOrientation.orientationInfo.orientation
         );
-      },
+      }
     );
     return () => subscription?.remove();
   }, []);
@@ -73,6 +78,23 @@ export function AppStateProvider({ children }: PropsWithChildren) {
         isLoading: appStateIsLoading,
         orientation: state?.orientation,
         homeCurrentView: state?.homeCurrentView || 1,
+        views: state?.views || [],
+        updateViews: (value) => {
+          const currentViews = state?.views || [];
+
+          if (currentViews.includes(value)) {
+            updateAppState(
+              "views",
+              currentViews.filter((i: any) => i !== value)
+            );
+
+            return;
+          }
+
+          currentViews.push(value);
+          const uniqueViews = uniq(currentViews);
+          updateAppState("views", uniqueViews);
+        },
         isLandscaped,
         setHomeCurrentView(value) {
           updateAppState("homeCurrentView", value);

@@ -5,13 +5,21 @@ import { navData } from "@/constants/navData";
 import { ThemedTouchableOpacity } from "./ThemedTouchableOpacity";
 import Entypo from "@expo/vector-icons/Entypo";
 import { useSession } from "@/hooks/sessionCtx";
+import { Grid } from "./Grid";
+import CardNavigator from "./CardNavigator";
+import { Dimensions, StyleSheet } from "react-native";
+import Fab from "./Fab";
+import { AntDesign, FontAwesome, Octicons } from "@expo/vector-icons";
+import TimeAndDate from "./TimeAndDate";
 
 export default function HomeLeftSection() {
-  const { homeCurrentView, isLandscaped } = useAppState();
+  const { homeCurrentView, isLandscaped, views } = useAppState();
   const { signOut } = useSession();
+  const dimensions = Dimensions.get("window");
 
   const selectedNav =
     navData.find((nav) => nav.id === homeCurrentView) || navData[0];
+  const filteredData = navData.filter((i) => views.includes(i.id));
 
   return (
     <ThemedView style={{ flex: 1 }}>
@@ -27,7 +35,7 @@ export default function HomeLeftSection() {
           }}
         >
           <ThemedText type="title" style={{ color: "white" }}>
-            {selectedNav?.label}
+            Synctimes React Native
           </ThemedText>
           <ThemedTouchableOpacity
             onPress={signOut}
@@ -42,23 +50,64 @@ export default function HomeLeftSection() {
 
       <ThemedView
         style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
+          flexDirection: "column",
         }}
       >
-        <ThemedText
-          type="title"
-          style={{
-            marginVertical: 20,
-          }}
-        >
-          Currently selected {selectedNav?.label}
-        </ThemedText>
-        {typeof selectedNav?.icon === "function"
-          ? selectedNav.icon(undefined)
-          : selectedNav?.icon}
+        <Grid
+          landscapeColumns={3}
+          data={filteredData}
+          renderItem={({ item }) => (
+            <CardNavigator
+              onPress={() => {}}
+              cardStyle={{
+                backgroundColor: "transparent",
+                flex: 1,
+                height: dimensions.height / 4 - 20,
+              }}
+              contentStyle={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "transparent",
+              }}
+            >
+              <Fab
+                style={{
+                  backgroundColor: item.backgroundColor,
+                  borderColor: "transparent",
+                }}
+                children={
+                  typeof item.icon === "function"
+                    ? item.icon(undefined)
+                    : item.icon
+                }
+              />
+            </CardNavigator>
+          )}
+        />
       </ThemedView>
     </ThemedView>
   );
 }
+
+const styles = StyleSheet.create({
+  timeContainer: {
+    flexDirection: "row",
+    marginTop: 10,
+    justifyContent: "space-evenly",
+  },
+  iconsContainer: {
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center",
+    position: "absolute",
+    right: 10,
+    bottom: 40,
+  },
+  iconWrapper: {
+    marginVertical: 15,
+  },
+  bottomIcon: {
+    marginTop: 30,
+  },
+});

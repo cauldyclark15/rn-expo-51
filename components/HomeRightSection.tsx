@@ -12,7 +12,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import TimeAndDate from "./TimeAndDate";
 
 export default function HomeRightSection() {
-  const { homeCurrentView, setHomeCurrentView } = useAppState();
+  const { views, updateViews } = useAppState();
   const dimensions = Dimensions.get("window");
 
   return (
@@ -27,11 +27,12 @@ export default function HomeRightSection() {
         renderItem={({ item }) => (
           <CardNavigator
             onPress={() => {
-              setHomeCurrentView(item.id);
+              updateViews(item.id);
             }}
             cardStyle={{
-              backgroundColor:
-                homeCurrentView === item.id ? "#bdbcbb" : "transparent",
+              backgroundColor: views.includes(item.id)
+                ? "#bdbcbb"
+                : "transparent",
               flex: 1,
               height: dimensions.height / 4 - 20,
             }}
@@ -39,8 +40,9 @@ export default function HomeRightSection() {
               flex: 1,
               justifyContent: "center",
               alignItems: "center",
-              backgroundColor:
-                homeCurrentView === item.id ? "#bdbcbb" : "transparent",
+              backgroundColor: views.includes(item.id)
+                ? "#bdbcbb"
+                : "transparent",
             }}
           >
             <Fab
