@@ -21,7 +21,10 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.cauldnclark.synctimesrn"
+      "package": "com.cauldnclark.synctimesrn",
+      "runtimeVersion": {
+        "policy": "appVersion"
+      }
     },
     "web": {
       "bundler": "metro",
@@ -48,6 +51,12 @@
         "projectId": "64144bca-cef5-478a-882d-b9fbb92adfb8"
       }
     },
-    "owner": "cauldnclark"
+    "owner": "cauldnclark",
+    "updates": {
+      "url": "https://u.expo.dev/64144bca-cef5-478a-882d-b9fbb92adfb8"
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    }
   }
 }
