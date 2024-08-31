@@ -50,8 +50,8 @@ export const navData: NavDataProps[] = [
       <ThemedText
         style={{
           color: "orange",
-          fontSize: 34,
-          lineHeight: 34,
+          fontSize: 25,
+          lineHeight: 30,
           fontWeight: "bold",
         }}
       >
@@ -107,7 +107,7 @@ export const navData: NavDataProps[] = [
       <ThemedText
         style={{
           color: "green",
-          fontSize: 30,
+          fontSize: 25,
           lineHeight: 30,
           fontWeight: "bold",
         }}

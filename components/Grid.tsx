@@ -1,6 +1,6 @@
 import { useAppState } from "@/hooks/appStateCtx";
 import React from "react";
-import { FlatList, StyleSheet } from "react-native";
+import { FlatList, type StyleProp, type ViewStyle } from "react-native";
 
 interface GridProps<T> {
   data: T[];
@@ -8,6 +8,7 @@ interface GridProps<T> {
   hideColumnOnLandscape?: number[]; // Array of row/column indexes to hide in landscape
   columns?: number; // Number of columns in portrait mode
   landscapeColumns?: number; // Number of columns in landscape mode
+  style?: StyleProp<ViewStyle>;
 }
 
 export function Grid<T>({
@@ -16,6 +17,7 @@ export function Grid<T>({
   hideColumnOnLandscape,
   columns = 1,
   landscapeColumns = 1,
+  style,
 }: GridProps<T>) {
   const { isLandscaped } = useAppState();
 
@@ -32,15 +34,8 @@ export function Grid<T>({
       renderItem={renderItem}
       keyExtractor={(_, index) => index.toString()}
       numColumns={numColumns}
-      contentContainerStyle={styles.grid}
+      contentContainerStyle={style}
       key={isLandscaped.toString()}
     />
   );
 }
-
-const styles = StyleSheet.create({
-  grid: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});

@@ -42,10 +42,10 @@ export default function Signin() {
 
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: "#41B3D3", dark: "#41B3D3" }}
+      headerBackgroundColor={{ light: "white", dark: "white" }}
       headerImage={
         <Image
-          source={require("@/assets/images/react-logo.png")}
+          source={require("@/assets/images/synctimes-with-logo.png")}
           style={styles.reactLogo}
         />
       }
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   reactLogo: {
-    height: 178,
+    height: 210,
     width: "100%",
     bottom: 0,
     left: 0,

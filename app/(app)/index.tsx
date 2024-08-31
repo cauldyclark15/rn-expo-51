@@ -1,6 +1,6 @@
 import React from "react";
 import { ThemedView } from "@/components/ThemedView";
-import { FlatList, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { useAppState } from "@/hooks/appStateCtx";
 import HomeRightSection from "@/components/HomeRightSection";
 import HomeLeftSection from "@/components/HomeLeftSection";
@@ -8,41 +8,24 @@ import { StatusBar } from "expo-status-bar";
 import * as ScreenOrientation from "expo-screen-orientation";
 
 export default function Home() {
-  ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
+  ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
   const { isLandscaped } = useAppState();
+  const dimensions = Dimensions.get("screen");
+
+  const rightWidth = dimensions.width / 3;
   return (
     <ThemedView style={[styles.container]}>
       <StatusBar hidden={isLandscaped} />
-      <FlatList
-        data={[
-          {
-            id: 1,
-            style: {
-              flex: 1,
-            },
-            children: <HomeLeftSection />,
-          },
-          {
-            id: 2,
-            style: {
-              width: 270,
-            },
-            hide: !isLandscaped,
-            children: <HomeRightSection />,
-          },
-        ]}
-        numColumns={isLandscaped ? 2 : 1}
-        renderItem={({ item }) => {
-          if (item.hide) {
-            return null;
-          }
-          return (
-            <ThemedView key={item.id} style={{ ...item.style }}>
-              {item.children}
-            </ThemedView>
-          );
-        }}
-      />
+      <ThemedView style={{ flex: 1, flexDirection: "row" }}>
+        <ThemedView style={{ flex: 1 }}>
+          <HomeLeftSection />
+        </ThemedView>
+        {isLandscaped && (
+          <ThemedView style={{ width: rightWidth, minWidth: 320 }}>
+            <HomeRightSection />
+          </ThemedView>
+        )}
+      </ThemedView>
     </ThemedView>
   );
 }

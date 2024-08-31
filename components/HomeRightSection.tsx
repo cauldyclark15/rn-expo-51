@@ -1,45 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Grid } from "@/components/Grid";
 import Fab from "./Fab";
 import CardNavigator from "./CardNavigator";
 import { navData } from "@/constants/navData";
 import { useAppState } from "@/hooks/appStateCtx";
 import { ThemedView } from "./ThemedView";
-import { StyleSheet } from "react-native";
-import { ThemedText } from "./ThemedText";
+import { Dimensions, StyleSheet } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Octicons from "@expo/vector-icons/Octicons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import TimeAndDate from "./TimeAndDate";
 
 export default function HomeRightSection() {
   const { homeCurrentView, setHomeCurrentView } = useAppState();
-  const [currentTime, setCurrentTime] = useState("");
-  const [currentDate, setCurrentDate] = useState("");
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      const now = new Date();
-
-      let hours = now.getHours();
-      const minutes = now.getMinutes().toString().padStart(2, "0");
-      const seconds = now.getSeconds().toString().padStart(2, "0");
-      const ampm = hours >= 12 ? "PM" : "AM";
-
-      hours = hours % 12;
-      hours = hours ? hours : 12;
-      const month = (now.getMonth() + 1).toString().padStart(2, "0");
-      const day = now.getDate().toString().padStart(2, "0");
-      const year = now.getFullYear();
-
-      setCurrentTime(`${hours}:${minutes}:${seconds} ${ampm}`);
-      setCurrentDate(`${month}/${day}/${year}`);
-    }, 1000);
-
-    return () => clearInterval(intervalId);
-  }, []);
+  const dimensions = Dimensions.get("window");
 
   return (
-    <ThemedView>
+    <ThemedView
+      style={{
+        flexDirection: "column",
+      }}
+    >
       <Grid
         landscapeColumns={3}
         data={navData}
@@ -51,9 +32,13 @@ export default function HomeRightSection() {
             cardStyle={{
               backgroundColor:
                 homeCurrentView === item.id ? "#bdbcbb" : "transparent",
+              flex: 1,
+              height: dimensions.height / 4 - 20,
             }}
             contentStyle={{
-              paddingVertical: 20,
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
               backgroundColor:
                 homeCurrentView === item.id ? "#bdbcbb" : "transparent",
             }}
@@ -77,10 +62,7 @@ export default function HomeRightSection() {
           <AntDesign name="lock1" size={40} color="#ede65a" />
         </ThemedView>
 
-        <ThemedView style={{ marginLeft: 10 }}>
-          <ThemedText style={styles.timeText}>{currentTime}</ThemedText>
-          <ThemedText style={styles.timeText}>{currentDate}</ThemedText>
-        </ThemedView>
+        <TimeAndDate />
 
         <ThemedView style={{ marginLeft: 10 }}>
           <Octicons name="book" size={40} color="black" />
@@ -95,17 +77,9 @@ export default function HomeRightSection() {
 
 const styles = StyleSheet.create({
   timeContainer: {
-    flex: 1,
     flexDirection: "row",
+    marginTop: 10,
     justifyContent: "space-evenly",
-    alignItems: "center",
-    marginTop: 14,
-  },
-  timeText: {
-    fontSize: 20,
-    fontWeight: "400",
-    color: "gray",
-    textAlign: "left",
   },
   iconsContainer: {
     flexDirection: "column",
@@ -113,12 +87,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "absolute",
     right: 10,
-    bottom: 40, // Adjust to position above the bottom right corner
+    bottom: 40,
   },
   iconWrapper: {
-    marginVertical: 15, // Spacing between icons
+    marginVertical: 15,
   },
   bottomIcon: {
-    marginTop: 30, // Add more space for the lock icon at the bottom
+    marginTop: 30,
   },
 });
