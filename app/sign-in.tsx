@@ -17,6 +17,8 @@ type FormData = {
   password: string;
 };
 export default function Signin() {
+  ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
+
   const { signIn } = useSession();
   const {} = useAppState();
   const {
@@ -29,7 +31,6 @@ export default function Signin() {
   const onSubmit: SubmitHandler<FormData> = (_data) => {
     signIn();
   };
-  ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
 
   async function resendActivationLink() {
     clearErrors();

@@ -5,8 +5,10 @@ import { useAppState } from "@/hooks/appStateCtx";
 import HomeRightSection from "@/components/HomeRightSection";
 import HomeLeftSection from "@/components/HomeLeftSection";
 import { StatusBar } from "expo-status-bar";
+import * as ScreenOrientation from "expo-screen-orientation";
 
 export default function Home() {
+  ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
   const { isLandscaped } = useAppState();
   return (
     <ThemedView style={[styles.container]}>
