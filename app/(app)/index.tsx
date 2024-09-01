@@ -8,7 +8,9 @@ import { StatusBar } from "expo-status-bar";
 import * as ScreenOrientation from "expo-screen-orientation";
 
 export default function Home() {
-  ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
+  ScreenOrientation.lockAsync(
+    ScreenOrientation.OrientationLock.LANDSCAPE_RIGHT
+  );
   const { isLandscaped } = useAppState();
   const dimensions = Dimensions.get("screen");
 
