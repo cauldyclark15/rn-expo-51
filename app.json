@@ -14,7 +14,8 @@
     },
     "ios": {
       "supportsTablet": true,
-      "requireFullScreen": true
+      "requireFullScreen": true,
+      "bundleIdentifier": "com.cauldnclark.synctimesrn"
     },
     "android": {
       "adaptiveIcon": {
