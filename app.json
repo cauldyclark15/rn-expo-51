@@ -16,7 +16,7 @@
       "supportsTablet": true,
       "requireFullScreen": true,
       "bundleIdentifier": "com.cauldnclark.synctimes",
-      "buildNumber": 2
+      "buildNumber": "2"
     },
     "android": {
       "adaptiveIcon": {
