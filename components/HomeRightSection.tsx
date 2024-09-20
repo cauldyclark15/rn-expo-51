@@ -13,7 +13,6 @@ import TimeAndDate from "./TimeAndDate";
 
 export default function HomeRightSection() {
   const { views, updateViews } = useAppState();
-  const dimensions = Dimensions.get("window");
 
   return (
     <ThemedView
@@ -34,7 +33,7 @@ export default function HomeRightSection() {
                 ? "#bdbcbb"
                 : "transparent",
               flex: 1,
-              height: dimensions.height / 4 - 20,
+              height: 170,
             }}
             contentStyle={{
               flex: 1,

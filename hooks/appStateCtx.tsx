@@ -3,10 +3,12 @@ import {
   createContext,
   type PropsWithChildren,
   useEffect,
+  useCallback,
 } from "react";
 import { useStorageState } from "./useStorage";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { uniq } from "lodash";
+import { useFocusEffect } from "expo-router";
 
 const AppStateContext = createContext<{
   isLoading: boolean;
@@ -18,7 +20,7 @@ const AppStateContext = createContext<{
   updateViews: (value: number) => void;
 }>({
   isLoading: false,
-  orientation: ScreenOrientation.Orientation.UNKNOWN,
+  orientation: ScreenOrientation.Orientation.LANDSCAPE_LEFT,
   isLandscaped: false,
   homeCurrentView: 1,
   setHomeCurrentView(_value) {},
@@ -43,10 +45,21 @@ export const Orientation = ScreenOrientation.Orientation;
 export function AppStateProvider({ children }: PropsWithChildren) {
   const [[appStateIsLoading, appState], setAppState] = useStorageState("app");
 
-  ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.ALL);
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     async function changeScreenOrientation() {
+  //       await ScreenOrientation.lockAsync(
+  //         ScreenOrientation.OrientationLock.ALL
+  //       );
+  //     }
+
+  //     changeScreenOrientation();
+  //   }, [])
+  // );
 
   function updateAppState(key: string, value: any) {
     const prevValue = JSON.parse(appState || "{}");
+    console.log({ key, value, prevValue });
     setAppState(
       JSON.stringify({
         ...prevValue,
@@ -54,18 +67,21 @@ export function AppStateProvider({ children }: PropsWithChildren) {
       })
     );
   }
+  // refactor useEffect to use useFocusEffect
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     const subscription = ScreenOrientation.addOrientationChangeListener(
+  //       (newOrientation) => {
+  //         updateAppState(
+  //           "orientation",
+  //           newOrientation.orientationInfo.orientation
+  //         );
+  //       }
+  //     );
 
-  useEffect(() => {
-    const subscription = ScreenOrientation.addOrientationChangeListener(
-      (newOrientation) => {
-        updateAppState(
-          "orientation",
-          newOrientation.orientationInfo.orientation
-        );
-      }
-    );
-    return () => subscription?.remove();
-  }, []);
+  //     return () => subscription?.remove();
+  //   }, [])
+  // );
 
   const state = JSON.parse(appState || "{}");
   const isLandscaped =

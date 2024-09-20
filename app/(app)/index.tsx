@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { ThemedView } from "@/components/ThemedView";
 import { Dimensions, StyleSheet } from "react-native";
 import { useAppState } from "@/hooks/appStateCtx";
@@ -9,6 +9,10 @@ import * as ScreenOrientation from "expo-screen-orientation";
 import { useFocusEffect } from "expo-router";
 
 export default function Home() {
+  const dimensions = Dimensions.get("screen");
+  const rightWidth = dimensions.width / 3;
+  const [rightWidthComputed, setRightWidthComputed] = useState(rightWidth);
+
   useFocusEffect(
     useCallback(() => {
       async function changeScreenOrientation() {
@@ -17,26 +21,27 @@ export default function Home() {
         );
       }
 
+      const dimensions = Dimensions.get("screen");
+      const rightWidth = dimensions.width / 3;
+      setRightWidthComputed(rightWidth);
+
       changeScreenOrientation();
     }, [])
   );
 
   const { isLandscaped } = useAppState();
-  const dimensions = Dimensions.get("screen");
 
-  const rightWidth = dimensions.width / 3;
   return (
     <ThemedView style={[styles.container]}>
       <StatusBar hidden={isLandscaped} />
       <ThemedView style={{ flex: 1, flexDirection: "row" }}>
-        <ThemedView style={{ flex: 1 }}>
+        <ThemedView style={{ flex: 2 }}>
           <HomeLeftSection />
         </ThemedView>
-        {isLandscaped && (
-          <ThemedView style={{ width: rightWidth, minWidth: 320 }}>
-            <HomeRightSection />
-          </ThemedView>
-        )}
+
+        <ThemedView style={{ flex: 1 }}>
+          <HomeRightSection />
+        </ThemedView>
       </ThemedView>
     </ThemedView>
   );
