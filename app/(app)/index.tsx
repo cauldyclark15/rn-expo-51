@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { ThemedView } from "@/components/ThemedView";
 import { Dimensions, StyleSheet } from "react-native";
 import { useAppState } from "@/hooks/appStateCtx";
@@ -6,11 +6,21 @@ import HomeRightSection from "@/components/HomeRightSection";
 import HomeLeftSection from "@/components/HomeLeftSection";
 import { StatusBar } from "expo-status-bar";
 import * as ScreenOrientation from "expo-screen-orientation";
+import { useFocusEffect } from "expo-router";
 
 export default function Home() {
-  ScreenOrientation.lockAsync(
-    ScreenOrientation.OrientationLock.LANDSCAPE_RIGHT
+  useFocusEffect(
+    useCallback(() => {
+      async function changeScreenOrientation() {
+        await ScreenOrientation.lockAsync(
+          ScreenOrientation.OrientationLock.LANDSCAPE_RIGHT
+        );
+      }
+
+      changeScreenOrientation();
+    }, [])
   );
+
   const { isLandscaped } = useAppState();
   const dimensions = Dimensions.get("screen");
 
