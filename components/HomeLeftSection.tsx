@@ -35,7 +35,7 @@ export default function HomeLeftSection() {
           }}
         >
           <ThemedText type="title" style={{ color: "white" }}>
-            Synctimes - Over-the-Air (100)
+            Synctimes - Over-the-Air (101)
           </ThemedText>
           <ThemedTouchableOpacity
             onPress={signOut}

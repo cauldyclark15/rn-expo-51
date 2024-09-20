@@ -59,7 +59,6 @@ export function AppStateProvider({ children }: PropsWithChildren) {
 
   function updateAppState(key: string, value: any) {
     const prevValue = JSON.parse(appState || "{}");
-    console.log({ key, value, prevValue });
     setAppState(
       JSON.stringify({
         ...prevValue,
