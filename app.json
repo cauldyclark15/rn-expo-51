@@ -24,7 +24,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.cauldnclark.synctimesrn",
-      "versionCode": 3,
+      "versionCode": 4,
       "runtimeVersion": {
         "policy": "appVersion"
       }
